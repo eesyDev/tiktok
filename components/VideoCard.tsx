@@ -53,7 +53,7 @@ const VideoCard: NextPage<IProps> = ({ post: { caption, postedBy, video, _id, li
             </div>
         )
     }
-
+{console.log(postedBy)}
     return (
         <div className='flex flex-col border-b-2 border-gray-200 pb-6'>
             <div className='flex '>

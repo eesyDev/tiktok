@@ -16,7 +16,7 @@
       videos.map((video : Video) => (
         <VideoCard post={video} key={video._id} isShowingAtHome />
       )) : 
-      <NoResults/>
+      <NoResults text='No videos found'/>
     }     
     </div>
   )

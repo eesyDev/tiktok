@@ -110,7 +110,7 @@ const Detail = ({ postDetails } : IProps) => {
                 </div>
                 <div className='relative w-[1000px] md:w-[900px] lg:w-[700px] '>
                     <div className='mt-10'>
-                        <Link href="">
+                        <Link href={`/profile/${post?.postedBy._id}`}>
                             <div className='flex gap-4 mb-4 bg-white w-full pl-10 cursor-pointer'>
                             <Image src={post.postedBy.image} alt='user-profile' width={60} height={60}/>
                                 <div>

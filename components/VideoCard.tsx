@@ -53,17 +53,15 @@ const VideoCard: NextPage<IProps> = ({ post: { caption, postedBy, video, _id, li
             </div>
         )
     }
-{console.log(postedBy)}
     return (
         <div className='flex flex-col border-b-2 border-gray-200 pb-6'>
             <div className='flex '>
                 <div className='md:w-16 md:h-16 w-10 h-10'>
-                <Link href="">
+                <Link href={`/profile/${postedBy?._id}`}>
                     <Image src={postedBy?.image} alt='' width={62} height={62}/>
                 </Link>
                 </div>
-                <div>
-                    <Link href=''>
+                    <Link href={`/profile/${postedBy?._id}`}>
                         <div className='flex items-center gap-2'>
                             <p className='flex gap-2 items-center md:text-md font-bold text-primary'>
                                 {postedBy?.userName}
@@ -71,7 +69,6 @@ const VideoCard: NextPage<IProps> = ({ post: { caption, postedBy, video, _id, li
                             </p>
                         </div>
                     </Link>
-                </div>
             </div>
             <div className='relative lg:ml-20 flex gap-4'>
                 <div 

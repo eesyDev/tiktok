@@ -27,10 +27,10 @@ export const getServerSideProps = async ({
 } : {
   query: { topic: string }
 }) => {
-  let response = await axios.get('http://localhost:3000/api/post');
+  let response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}`);
 
   if (topic) {
-    response = await axios.get(`http://localhost:3000/api/discover/${topic}`)
+    response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/${topic}`)
   }
   return {
     props: {

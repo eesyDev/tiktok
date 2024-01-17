@@ -43,7 +43,7 @@ const Detail = ({ postDetails } : IProps) => {
 
     const handleLike = async (like: boolean) => {
         if(userProfile) {
-            const res = await axios.put('http://localhost:3000/api/like', {
+            const res = await axios.put(``, {
                 userId: userProfile._id,
                 postId: post._id,
                 like
@@ -58,7 +58,7 @@ const Detail = ({ postDetails } : IProps) => {
         if (userProfile) {
             if (comment) {
                 setIsPostingComment(true);
-                const res = await axios.put(`http://localhost:3000/api/post/${post._id}`, {
+                const res = await axios.put(`${process.env.NEXT_PUBLIC_BASE_URL}/api/post/${post._id}`, {
                     userId: userProfile._id,
                     comment
                 });
@@ -80,7 +80,7 @@ const Detail = ({ postDetails } : IProps) => {
     const deleteComment = async (comment: any) => {
         if (userProfile._id === comment.postedBy._id) {
           try {
-            const res = await axios.delete(`http://localhost:3000/api/deleteComment/${post._id}`, {
+            const res = await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/api/deleteComment/${post._id}`, {
               data: { comment: { _key: comment._key }, id: post._id }
             });
             console.log(res.data.comments);

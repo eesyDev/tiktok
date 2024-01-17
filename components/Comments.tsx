@@ -1,7 +1,8 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { GoVerified } from 'react-icons/go';
+import { MdDelete } from 'react-icons/md';
 
 import useAuthStore from '@/store/authStore';
 import { IUser } from '@/types';
@@ -13,6 +14,7 @@ interface IProps {
     comment: string;
     setComment: Dispatch<SetStateAction<string>>;
     addComment: (e: React.FormEvent) => void;
+    deleteComment: (item: IComment) => void;
 } 
 
 interface IComment {
@@ -23,8 +25,11 @@ interface IComment {
 }
 
 
-const Comments = ({comments, isPostingComment, comment, setComment, addComment} : IProps) => {
+
+const Comments = ({comments, isPostingComment, comment, setComment, addComment, deleteComment} : IProps) => {
     const {allUsers, userProfile} = useAuthStore();
+
+    const deleteButtonsRef = useRef<HTMLDivElement[]>([]);
 
   return (
     <div className='border-t-2 border-gray-200 pt-4 px-10 mt-4 bg-[#f8f8f8] pb-[100px]'>
@@ -55,6 +60,10 @@ const Comments = ({comments, isPostingComment, comment, setComment, addComment} 
                                     </Link>
                                     <div>
                                         <p className='mt-5 ml-16 text-[16px] mr-8'>{item.comment}</p>
+                                    </div>
+                                    <div
+                                       className='delete-comment' onClick={() => deleteComment(item)} data-key={item._key}>
+                                        <MdDelete/>
                                     </div>
                                 </div>
                             )

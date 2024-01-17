@@ -22,12 +22,19 @@
   )
 }
 
-export const getServerSideProps = async () => {
-  const { data } = await axios.get('http://localhost:3000/api/post');
+export const getServerSideProps = async ({
+  query: {topic},
+} : {
+  query: { topic: string }
+}) => {
+  let response = await axios.get('http://localhost:3000/api/post');
 
+  if (topic) {
+    response = await axios.get(`http://localhost:3000/api/discover/${topic}`)
+  }
   return {
     props: {
-      videos: data
+      videos: response.data
     }
   }
 }

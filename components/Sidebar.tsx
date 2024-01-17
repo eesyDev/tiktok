@@ -36,15 +36,7 @@ const Sidebar : NextPage = () => {
               </div>
             </Link>
           </div>
-          {
-            !userProfile && (
-              <div className='px-2 pz-4 hidden xl:block'>
-                <p className='text-gray-400'>Log in to lice and comment on videos</p>
-                <div className='pr-4'>
-                </div>
-              </div>
-            )
-          }
+         
           <Discover/>
           <SuggestedAccounts fetchAllUsers={fetchAllUsers} allUsers={allUsers}/>
           <Footer/>

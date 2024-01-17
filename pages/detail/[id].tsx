@@ -5,6 +5,7 @@ import { GoVerified } from 'react-icons/go';
 import { MdOutlineCancel } from 'react-icons/md';
 import { BsFillPlayFill } from 'react-icons/bs';
 import { HiVolumeUp, HiVolumeOff } from 'react-icons/hi';
+import { MdDelete } from 'react-icons/md';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
@@ -23,6 +24,7 @@ const Detail = ({ postDetails } : IProps) => {
     const [isMuted, setIsMuted] = useState<boolean>(false);
     const [isPostingComment, setIsPostingComment] = useState<boolean>(false);
     const [comment, setComment] = useState<string>('');
+    const [isActive, setIsActive] = useState(false);
 
     const videoRef = useRef<HTMLVideoElement>(null);
     
@@ -63,15 +65,36 @@ const Detail = ({ postDetails } : IProps) => {
                 setPost({...post, comments: res.data.comments});
                 setComment('');
                 setIsPostingComment(false);
+                //console.log(comment)
             }
         }
     }
-    
+
+    const deletePost = async () => {
+        if((userProfile._id === post.postedBy._id)) {
+            const res = await axios.delete(`http://localhost:3000/api/post/${post._id}`)
+        } 
+        router.back();
+    }
+
+    const deleteComment = async (comment: any) => {
+        if (userProfile._id === comment.postedBy._id) {
+          try {
+            const res = await axios.delete(`http://localhost:3000/api/deleteComment/${post._id}`, {
+              data: { comment: { _key: comment._key }, id: post._id }
+            });
+            console.log(res.data.comments);
+            setPost({...post, comments: res.data.comments});
+          } catch (error) {
+            console.error('Error deleting comment:', error);
+          }
+        }
+      };
   return (
     <>
         {post && (
              <div className='flex w-full absolute left-0 top-0 bg-white flex-wrap lg:flex-nowrap'>
-                <div className='relative flex-2 w-[1000px] lg:w-9/12 flex justify-center items-center bg-blurred-img bg-no-repeat bg-cover bg-center'>
+                <div className={`relative flex-2 w-[1000px] lg:w-9/12 flex justify-center items-center bg-blurred-img bg-no-repeat bg-cover bg-center`}>
                     <div className='opacity-90 absolute top-6 left-2 lg:left-6 flex gap-6 z-50'>
                         <p className='cursor-pointer' onClick={() => router.back()}>
                             <MdOutlineCancel className="text-white text-[35px] hover:opacity-90"/>
@@ -125,11 +148,22 @@ const Detail = ({ postDetails } : IProps) => {
                         <div className='px-10'>
                             <p className='text-md text-gray-600'>{post.caption}</p>
                         </div>
-                        <div className='mt-10 px-10'>
+                        <div className='mt-10 px-10 flex gap-4 items-start'>
                             {userProfile && <LikeButton
                                 likes={post.likes}
                                 handleLike={() => handleLike(true)}
                                 handleDislike={() => handleLike(false)}                            />}
+                                {
+                                    userProfile?._id === post?.postedBy?._id && (
+                                        <div className='mt-4 flex flex-col justify-center items-center cursor-pointer'>
+                                            <div className='bg-primary rounded-full p-2 md:p-4' onClick={deletePost}>
+                                                <MdDelete className='text-lg md:text-2xl'/>
+                                            </div>
+                                        </div>
+                                    ) 
+                                }
+                                
+                                
                         </div>
                         <Comments
                             comment={comment}
@@ -137,6 +171,7 @@ const Detail = ({ postDetails } : IProps) => {
                             addComment={addComment}
                             comments={post.comments}
                             isPostingComment={isPostingComment}
+                            deleteComment={deleteComment}
                         />
                     </div>
                     
